@@ -1,22 +1,17 @@
 import argparse
 import os
 import time
-import math
-import collections
 from tqdm import tqdm
 
 import torch
-import torch.nn as nn
 from torch.autograd import Variable
 import torch.nn.functional as F
 
 import numpy as np
-import pandas as pd
 
-from reparameterization import apply_weight_norm, remove_weight_norm
+from sentiment_discovery.reparameterization import apply_weight_norm, remove_weight_norm
 
-from model import SentimentClassifier
-from configure_data import configure_data
+from sentiment_discovery.model import SentimentClassifier
 from arguments import add_general_args, add_model_args, add_classifier_model_args, add_run_classifier_args
 
 def get_data_and_args():

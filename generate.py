@@ -15,7 +15,7 @@ from torch.autograd import Variable
 
 from apex.reparameterization import apply_weight_norm, remove_weight_norm
 
-import model
+from sentiment_discovery import model
 
 import numpy as np
 import matplotlib

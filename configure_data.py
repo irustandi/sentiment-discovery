@@ -1,7 +1,7 @@
-import os
 import copy
 
-import data_utils
+from sentiment_discovery import data_utils
+
 
 class DataConfig(object):
     def __init__(self, parser, defaults={}):

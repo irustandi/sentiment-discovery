@@ -1,13 +1,10 @@
 import argparse
 import os
 import time
-import math
-import collections
 import pickle as pkl
 from tqdm import tqdm
 
 import torch
-import torch.nn as nn
 from torch.autograd import Variable
 
 import matplotlib
@@ -17,11 +14,9 @@ import matplotlib.pyplot as plt
 import numpy as np
 from logreg_utils import train_logreg
 
-from fp16 import FP16_Module, FP16_Optimizer
-from reparameterization import apply_weight_norm, remove_weight_norm
+from sentiment_discovery.reparameterization import apply_weight_norm, remove_weight_norm
 
-from model import RNNFeaturizer, TransformerFeaturizer
-from configure_data import configure_data
+from sentiment_discovery.model import RNNFeaturizer, TransformerFeaturizer
 from arguments import add_general_args, add_model_args, add_classifier_model_args, add_sentiment_transfer_args
 
 def get_data_and_args():

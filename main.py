@@ -8,11 +8,10 @@ import torch.nn as nn
 from torch.autograd import Variable
 
 
-from fp16 import FP16_Module, FP16_Optimizer
+from sentiment_discovery.fp16 import FP16_Module, FP16_Optimizer
 
-import data
-import model
-from model import DistributedDataParallel as DDP
+from sentiment_discovery import model
+from sentiment_discovery.model import DistributedDataParallel as DDP
 
 from apex.reparameterization import apply_weight_norm, remove_weight_norm
 from configure_data import configure_data

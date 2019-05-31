@@ -1,27 +1,19 @@
 import argparse
 import os
 import sys
-import time
 import math
 import random
-import collections
 import pandas as pd
-import pickle as pkl
-import json
 import torch
-import torch.nn as nn
 from torch.autograd import Variable
 
 import numpy as np
 from logreg_utils import train_logreg
 
-from fp16 import FP16_Module, FP16_Optimizer
-from reparameterization import apply_weight_norm, remove_weight_norm
+from sentiment_discovery.reparameterization import apply_weight_norm, remove_weight_norm
 
-import model as M
+from sentiment_discovery import model as M
 from tqdm import tqdm
-from model import DistributedDataParallel as DDP
-from configure_data import configure_data
 from learning_rates import AnnealingLR, SlantedTriangularLR, ConstantLR
 from arguments import add_general_args, add_model_args, add_classifier_model_args, add_finetune_classifier_args
 from metric_utils import update_info_dict, get_metric
