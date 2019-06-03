@@ -17,7 +17,7 @@ from logreg_utils import train_logreg
 from sentiment_discovery.reparameterization import apply_weight_norm, remove_weight_norm
 
 from sentiment_discovery.model import RNNFeaturizer, TransformerFeaturizer
-from arguments import add_general_args, add_model_args, add_classifier_model_args, add_sentiment_transfer_args
+from sentiment_discovery.arguments import add_general_args, add_model_args, add_classifier_model_args, add_sentiment_transfer_args
 
 def get_data_and_args():
     parser = argparse.ArgumentParser(description='PyTorch Sentiment Discovery Transfer Learning')

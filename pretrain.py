@@ -18,7 +18,7 @@ from sentiment_discovery.model import DistributedDataParallel as DDP
 
 from sentiment_discovery.reparameterization import apply_weight_norm, remove_weight_norm
 from learning_rates import AnnealingLR, WarmupLR, SlantedTriangularLR
-from arguments import add_general_args, add_model_args, add_unsupervised_data_args
+from sentiment_discovery.arguments import add_general_args, add_model_args, add_unsupervised_data_args
 
 rnn_model = None
 

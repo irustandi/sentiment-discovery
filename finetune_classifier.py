@@ -15,7 +15,7 @@ from sentiment_discovery.reparameterization import apply_weight_norm, remove_wei
 from sentiment_discovery import model as M
 from tqdm import tqdm
 from learning_rates import AnnealingLR, SlantedTriangularLR, ConstantLR
-from arguments import add_general_args, add_model_args, add_classifier_model_args, add_finetune_classifier_args
+from sentiment_discovery.arguments import add_general_args, add_model_args, add_classifier_model_args, add_finetune_classifier_args
 from metric_utils import update_info_dict, get_metric
 from threshold import _binary_threshold, _neutral_threshold_two_output
 

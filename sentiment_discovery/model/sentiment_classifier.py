@@ -8,10 +8,15 @@ from .model import RNNFeaturizer, TransformerFeaturizer
 from .transformer_utils import GeLU
 
 class BinaryClassifier(nn.Module):
-    def __init__(self, num_features=4096, **kwargs):
+    def __init__(self,
+                 num_features=4096,
+                 num_labels=2,
+                 **kwargs,
+                 ):
         super().__init__()
         self.nclasses = 2
-        self.dense0 = nn.Linear(num_features, 1)
+        self.dense0 = nn.Linear(num_features,
+                                num_labels)
         self.neurons = None
         self.thresholds = torch.tensor(np.array([.5])).float()
         self.final = 1
@@ -29,9 +34,10 @@ class BinaryClassifier(nn.Module):
         self.thresholds = self.thresholds.cpu()
 
     def forward(self, X, **kwargs):
-        out = torch.sigmoid(self.linear(X)).float()
-        return threshold_predictions(out, self.thresholds)
+        #out = torch.sigmoid(self.linear(X)).float()
+        #return threshold_predictions(out, self.thresholds)
         #return F.sigmoid(self.linear(X), dim=-1).float()
+        return self.linear(X)
 
     def linear(self, X):
         weight = self.dense0.weight
@@ -104,8 +110,18 @@ NONLINEARITY_MAP = {
 }
 
 class MultiLayerBinaryClassifier(nn.Module):
-    def __init__(self, input_layer_size, layer_sizes, dropout=0.1, init_dropout=True, heads_per_class=1,
-                 nonlinearity='PReLU', softmax=False, double_threshold=False, dual_threshold=False, **kwargs):
+    def __init__(self,
+                 input_layer_size,
+                 layer_sizes,
+                 dropout=0.1,
+                 init_dropout=True,
+                 heads_per_class=1,
+                 nonlinearity='PReLU',
+                 softmax=False,
+                 double_threshold=False,
+                 dual_threshold=False,
+                 **kwargs,
+                 ):
         super(MultiLayerBinaryClassifier, self).__init__()
         self.heads_per_class = heads_per_class
         self.nclasses = int(layer_sizes[-1])
@@ -269,7 +285,19 @@ class MultiHeadCrossEntropyLoss(torch.nn.CrossEntropyLoss):
 class SentimentClassifier(nn.Module):
     """Container module with an encoder, a recurrent module, and a decoder."""
 
-    def __init__(self, model_type, ntoken, ninp, nhid, nlayers, classifier_hidden_layers=None, dropout=0.5, all_layers=False, concat_pools=[False] * 3, get_lm_out=False, args=None):
+    def __init__(self,
+                 model_type,
+                 ntoken,
+                 ninp,
+                 nhid,
+                 nlayers,
+                 classifier_hidden_layers=None,
+                 dropout=0.5,
+                 all_layers=False,
+                 concat_pools=[False] * 3,
+                 get_lm_out=False,
+                 args=None,
+                 ):
         super().__init__()
         self.model_type = model_type
         if model_type == 'transformer':
@@ -277,16 +305,31 @@ class SentimentClassifier(nn.Module):
             out_size = args.decoder_embed_dim
         else:
             # NOTE: Dropout is for Classifier. Add separate RNN dropout or via params, if needed.
-            self.lm_encoder = RNNFeaturizer(model_type, ntoken, ninp, nhid, nlayers, dropout=0.0, all_layers=all_layers,
-                                         concat_pools=concat_pools, get_lm_out=get_lm_out, hidden_warmup=args.num_hidden_warmup > 0)
+            self.lm_encoder = RNNFeaturizer(model_type,
+                                            ntoken,
+                                            ninp,
+                                            nhid,
+                                            nlayers,
+                                            dropout=0.0,
+                                            all_layers=all_layers,
+                                            concat_pools=concat_pools,
+                                            get_lm_out=get_lm_out,
+                                            hidden_warmup=args.num_hidden_warmup > 0)
             out_size = self.lm_encoder.output_size
         self.encoder_dim = out_size
 
         if classifier_hidden_layers is None:
-            self.classifier = BinaryClassifier(num_features=self.encoder_dim, double_threshold=args.double_thresh, dual_threshold=args.dual_thresh)
+            self.classifier = BinaryClassifier(num_features=self.encoder_dim,
+                                               double_threshold=args.double_thresh,
+                                               dual_threshold=args.dual_thresh)
         else:
-            self.classifier = MultiLayerBinaryClassifier(self.encoder_dim, classifier_hidden_layers, dropout=dropout, heads_per_class=args.heads_per_class,
-                                                         softmax=args.use_softmax, double_threshold=args.double_thresh, dual_threshold=args.dual_thresh and not args.joint_binary_train)
+            self.classifier = MultiLayerBinaryClassifier(self.encoder_dim,
+                                                         classifier_hidden_layers,
+                                                         dropout=dropout,
+                                                         heads_per_class=args.heads_per_class,
+                                                         softmax=args.use_softmax,
+                                                         double_threshold=args.double_thresh,
+                                                         dual_threshold=args.dual_thresh and not args.joint_binary_train)
         self.out_dim = self.classifier.final
         self.nclasses = self.classifier.nclasses
         self.neurons_ = None

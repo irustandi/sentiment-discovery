@@ -14,7 +14,7 @@ from sentiment_discovery import model
 from sentiment_discovery.model import DistributedDataParallel as DDP
 
 from apex.reparameterization import apply_weight_norm, remove_weight_norm
-from configure_data import configure_data
+from sentiment_discovery.configure_data import configure_data
 from learning_rates import LinearLR
 
 parser = argparse.ArgumentParser(description='PyTorch Sentiment-Discovery Language Modeling')

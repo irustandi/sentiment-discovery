@@ -12,7 +12,7 @@ import numpy as np
 from sentiment_discovery.reparameterization import apply_weight_norm, remove_weight_norm
 
 from sentiment_discovery.model import SentimentClassifier
-from arguments import add_general_args, add_model_args, add_classifier_model_args, add_run_classifier_args
+from sentiment_discovery.arguments import add_general_args, add_model_args, add_classifier_model_args, add_run_classifier_args
 
 def get_data_and_args():
     parser = argparse.ArgumentParser(description='PyTorch Sentiment Discovery Classification')
