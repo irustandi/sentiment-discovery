@@ -291,6 +291,7 @@ class SentimentClassifier(nn.Module):
                  ninp,
                  nhid,
                  nlayers,
+                 nlabels,
                  classifier_hidden_layers=None,
                  dropout=0.5,
                  all_layers=False,
@@ -319,10 +320,12 @@ class SentimentClassifier(nn.Module):
         self.encoder_dim = out_size
 
         if classifier_hidden_layers is None:
-            self.classifier = BinaryClassifier(num_features=self.encoder_dim,
+            self.classifier = BinaryClassifier(num_labels=nlabels,
+                                               num_features=self.encoder_dim,
                                                double_threshold=args.double_thresh,
                                                dual_threshold=args.dual_thresh)
         else:
+            assert nlabels == int(classifier_hidden_layers[-1])
             self.classifier = MultiLayerBinaryClassifier(self.encoder_dim,
                                                          classifier_hidden_layers,
                                                          dropout=dropout,
