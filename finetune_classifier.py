@@ -45,29 +45,31 @@ def get_model_and_optim(args, train_data):
     ntokens = args.data_size
     concat_pools = args.concat_max, args.concat_min, args.concat_mean
     if args.model == 'transformer':
-        model = M.SentimentClassifier(args.model,
-                                      ntokens,
-                                      None,
-                                      None,
-                                      None,
-                                      args.classifier_hidden_layers,
-                                      args.classifier_dropout,
-                                      None,
-                                      concat_pools,
-                                      args.aux_lm_loss,
-                                      args)
+        model = M.SentimentClassifier(model_type=args.model,
+                                      ntoken=ntokens,
+                                      ninp=None,
+                                      nhid=None,
+                                      nlayers=None,
+                                      classifier_hidden_layers=args.classifier_hidden_layers,
+                                      dropout=args.classifier_dropout,
+                                      all_layers=None,
+                                      concat_pools=concat_pools,
+                                      get_lm_out=args.aux_lm_loss,
+                                      args=args,
+                                      )
     else:
-        model = M.SentimentClassifier(args.model,
-                                      ntokens,
-                                      args.emsize,
-                                      args.nhid,
-                                      args.nlayers,
-                                      args.classifier_hidden_layers,
-                                      args.classifier_dropout,
-                                      args.all_layers,
-                                      concat_pools,
-                                      args.aux_lm_loss,
-                                      args)
+        model = M.SentimentClassifier(model_type=args.model,
+                                      ntoken=ntokens,
+                                      ninp=args.emsize,
+                                      nhid=args.nhid,
+                                      nlayers=args.nlayers,
+                                      classifier_hidden_layers=args.classifier_hidden_layers,
+                                      dropout=args.classifier_dropout,
+                                      all_layers=args.all_layers,
+                                      concat_pools=concat_pools,
+                                      get_lm_out=args.aux_lm_loss,
+                                      args=args,
+                                      )
     if args.cuda:
         model.cuda()
 
