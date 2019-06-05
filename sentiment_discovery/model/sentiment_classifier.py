@@ -351,7 +351,7 @@ class SentimentClassifier(nn.Module):
         return self
 
 
-    def forward(self, input, seq_len=None, get_hidden=False):
+    def forward(self, input, seq_len=None, get_hidden=True):
         hidden, lm_out = self.lm_encoder(input, seq_len, get_hidden)
         if get_hidden:
             hidden = hidden[0]
@@ -360,7 +360,8 @@ class SentimentClassifier(nn.Module):
         classifier_in = hidden
         class_out = self.classifier(classifier_in)
 
-        return class_out, (lm_out, classifier_in)
+        #return class_out, (lm_out, classifier_in)
+        return class_out
 
     def state_dict(self, destination=None, prefix='', keep_vars=False):
         sd = {}
